@@ -25,8 +25,13 @@ def test_documentation_links_target_existing_local_files():
     expected = [
         "docs/architecture_overview.md",
         "docs/decisions/ADR-001-portfolio-platform.md",
+        "docs/source_to_staging_mapping.md",
+        "docs/staging_failure_runbook.md",
+        "docs/da1_evidence.md",
         "contracts/sources/customers.yml",
         "src/data_architecture/contracts.py",
+        "src/data_architecture/synthetic_data.py",
+        "src/data_architecture/staging.py",
         "tests",
     ]
     missing = [path for path in expected if not (ROOT / path).exists()]

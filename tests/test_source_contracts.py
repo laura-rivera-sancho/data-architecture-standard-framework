@@ -20,7 +20,14 @@ def customer_contract():
 
 def test_all_source_contracts_validate():
     validated = validate_directory(CONTRACTS)
-    assert {path.name for path in validated} == {"customers.yml", "orders.yml"}
+    assert {path.name for path in validated} == {
+        "campaign_touchpoints.yml",
+        "customer_events.yml",
+        "customers.yml",
+        "experiment_exposures.yml",
+        "order_items.yml",
+        "orders.yml",
+    }
 
 
 def test_primary_key_must_be_declared(customer_contract):

@@ -1,0 +1,55 @@
+version: 1
+source: experiment_exposures
+owner: experimentation-data@fictional.example
+description: Customer assignment and first exposure to fictional marketing experiments.
+grain: One record per experiment_id and customer_id.
+primary_key:
+  - experiment_id
+  - customer_id
+freshness:
+  loaded_at_field: source_loaded_at
+  warn_after_hours: 12
+  error_after_hours: 24
+fields:
+  - name: experiment_id
+    type: string
+    nullable: false
+    description: Stable identifier for the fictional experiment.
+    pii: false
+    classification: internal
+  - name: customer_id
+    type: string
+    nullable: false
+    description: Customer assigned to the experiment.
+    pii: false
+    classification: internal
+  - name: variant
+    type: string
+    nullable: false
+    description: Assigned experimental treatment or control condition.
+    pii: false
+    classification: internal
+  - name: eligible_at_assignment
+    type: boolean
+    nullable: false
+    description: Whether the customer satisfied declared eligibility rules at assignment.
+    pii: false
+    classification: internal
+  - name: assigned_at
+    type: timestamp
+    nullable: false
+    description: Timestamp when the customer was assigned to a variant.
+    pii: false
+    classification: internal
+  - name: first_exposed_at
+    type: timestamp
+    nullable: true
+    description: Timestamp of first observed treatment exposure, when exposure occurred.
+    pii: false
+    classification: internal
+  - name: source_loaded_at
+    type: timestamp
+    nullable: false
+    description: Timestamp when the record was extracted for analytical processing.
+    pii: false
+    classification: internal

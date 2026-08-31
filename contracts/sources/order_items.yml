@@ -1,0 +1,55 @@
+version: 1
+source: order_items
+owner: commerce-data@fictional.example
+description: Product-level lines associated with fictional customer orders.
+grain: One record per order_id and line_number.
+primary_key:
+  - order_id
+  - line_number
+freshness:
+  loaded_at_field: source_loaded_at
+  warn_after_hours: 6
+  error_after_hours: 12
+fields:
+  - name: order_id
+    type: string
+    nullable: false
+    description: Order identifier associated with the product line.
+    pii: false
+    classification: internal
+  - name: line_number
+    type: integer
+    nullable: false
+    description: One-based line sequence within the order.
+    pii: false
+    classification: internal
+  - name: product_id
+    type: string
+    nullable: false
+    description: Stable fictional product identifier.
+    pii: false
+    classification: internal
+  - name: quantity
+    type: integer
+    nullable: false
+    description: Number of product units on the order line.
+    pii: false
+    classification: internal
+  - name: unit_price
+    type: decimal
+    nullable: false
+    description: Price per product unit before line-level discount.
+    pii: false
+    classification: confidential
+  - name: line_discount_amount
+    type: decimal
+    nullable: false
+    description: Promotional discount allocated to the order line.
+    pii: false
+    classification: confidential
+  - name: source_loaded_at
+    type: timestamp
+    nullable: false
+    description: Timestamp when the record was extracted for analytical processing.
+    pii: false
+    classification: internal

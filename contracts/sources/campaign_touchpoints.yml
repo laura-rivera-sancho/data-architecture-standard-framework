@@ -1,0 +1,60 @@
+version: 1
+source: campaign_touchpoints
+owner: marketing-data@fictional.example
+description: Delivered and observed customer interactions with fictional marketing campaigns.
+grain: One record per touchpoint_id.
+primary_key:
+  - touchpoint_id
+freshness:
+  loaded_at_field: source_loaded_at
+  warn_after_hours: 12
+  error_after_hours: 24
+fields:
+  - name: touchpoint_id
+    type: string
+    nullable: false
+    description: Stable fictional campaign-touchpoint identifier.
+    pii: false
+    classification: internal
+  - name: customer_id
+    type: string
+    nullable: false
+    description: Customer associated with the campaign interaction.
+    pii: false
+    classification: internal
+  - name: campaign_id
+    type: string
+    nullable: false
+    description: Marketing campaign that generated the interaction.
+    pii: false
+    classification: internal
+  - name: channel
+    type: string
+    nullable: false
+    description: Delivery channel such as email, paid social, SMS, or push.
+    pii: false
+    classification: public
+  - name: touchpoint_type
+    type: string
+    nullable: false
+    description: Interaction type such as delivered, opened, clicked, or converted.
+    pii: false
+    classification: internal
+  - name: touchpoint_timestamp
+    type: timestamp
+    nullable: false
+    description: Timestamp when the interaction occurred.
+    pii: false
+    classification: internal
+  - name: attributed_cost
+    type: decimal
+    nullable: false
+    description: Fictional campaign cost allocated to the touchpoint.
+    pii: false
+    classification: confidential
+  - name: source_loaded_at
+    type: timestamp
+    nullable: false
+    description: Timestamp when the record was extracted for analytical processing.
+    pii: false
+    classification: internal

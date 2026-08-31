@@ -8,18 +8,18 @@ A milestone is complete only when it includes documented business purpose and gr
 
 ## DA1 — Source Contracts & Staging
 
-**Status:** In progress
+**Status:** In review
 
 **Outcome:** Operational inputs become explicit, version-controlled interfaces before downstream modeling begins.
 
 Deliverables:
 
-- source contracts for customers, orders, order items, campaign touchpoints, experiment exposures, and customer events
-- declared owner, grain, primary keys, freshness thresholds, field semantics, nullability, and sensitivity classifications
-- automated structural and governance validation
-- staging naming, typing, deduplication, and audit-column conventions
-- deterministic synthetic source fixtures for development and testing
-- a source-to-staging mapping and failure-handling runbook
+- [x] source contracts for customers, orders, order items, campaign touchpoints, experiment exposures, and customer events
+- [x] declared owner, grain, primary keys, freshness thresholds, field semantics, nullability, and sensitivity classifications
+- [x] automated structural and governance validation
+- [x] staging naming, typing, deduplication, and audit-column conventions
+- [x] deterministic synthetic source fixtures for development and testing
+- [x] a source-to-staging mapping and failure-handling runbook
 
 Acceptance criteria:
 

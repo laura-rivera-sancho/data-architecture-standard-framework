@@ -16,6 +16,8 @@ All companies, identifiers, and future sample datasets are fictional or syntheti
 | Architecture judgment | [Architecture overview](docs/architecture_overview.md) | Layering, ownership, governance, and downstream consumers |
 | Data-contract design | [Customer source contract](contracts/sources/customers.yml) | Grain, keys, freshness, field semantics, and data classification |
 | Reusable implementation | [Contract validator](src/data_architecture/contracts.py) | Automated validation of contract structure and governance rules |
+| Staging design | [Source-to-staging mapping](docs/source_to_staging_mapping.md) | Type normalization, deduplication, traceability, and layer boundaries |
+| DA1 result | [DA1 evidence](docs/da1_evidence.md) | Reference-run metrics, reliability controls, failure evidence, and limitations |
 | Engineering quality | [Automated tests](tests) | Contract, repository-integrity, and critical-rule checks |
 | Design decisions | [ADR-001](docs/decisions/ADR-001-portfolio-platform.md) | Explicit tradeoffs and implementation boundaries |
 
@@ -60,7 +62,7 @@ See the [architecture overview](docs/architecture_overview.md) for layer respons
 
 | Milestone | Status | Outcome |
 |---|---|---|
-| **DA1 — Source Contracts & Staging** | In progress | Governed inputs, freshness expectations, identifiers, staging conventions, and automated checks |
+| **DA1 — Source Contracts & Staging** | In review | Governed inputs, freshness expectations, identifiers, staging conventions, and automated checks |
 | **DA2 — Dimensional Warehouse** | Planned | Defensible facts, conformed dimensions, declared grain, history strategy, and business rules |
 | **DA3 — Business Data Marts** | Planned | Reusable data products for customer, marketing, experimentation, ML, and executive decisions |
 | **DA4 — Semantic Governance & Operations** | Planned | Trusted metrics, lineage, ownership, observability, performance, and change management |
@@ -75,7 +77,9 @@ data-architecture-standard-framework/
 │   └── sources/             # Version-controlled operational source contracts
 ├── docs/
 │   ├── decisions/           # Architecture decision records
-│   └── architecture_overview.md
+│   ├── architecture_overview.md
+│   ├── source_to_staging_mapping.md
+│   └── staging_failure_runbook.md
 ├── src/data_architecture/   # Reusable validation and modeling utilities
 ├── tests/                   # Contract and repository-integrity tests
 ├── ROADMAP.md               # Pillar milestones and acceptance criteria
@@ -91,6 +95,8 @@ python -m venv .venv
 source .venv/bin/activate  # Windows PowerShell: .venv\Scripts\Activate.ps1
 python -m pip install --requirement requirements-dev.txt
 python -m data_architecture.contracts contracts/sources
+python -m data_architecture.synthetic_data data/generated/raw
+python -m data_architecture.staging data/generated/raw contracts/sources data/generated/staged --staged-at 2026-08-30T13:00:00Z
 ruff check .
 pytest
 ```

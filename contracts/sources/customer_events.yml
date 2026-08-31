@@ -1,0 +1,54 @@
+version: 1
+source: customer_events
+owner: digital-product-data@fictional.example
+description: Fictional behavioral events generated across web and mobile experiences.
+grain: One record per event_id.
+primary_key:
+  - event_id
+freshness:
+  loaded_at_field: source_loaded_at
+  warn_after_hours: 3
+  error_after_hours: 6
+fields:
+  - name: event_id
+    type: string
+    nullable: false
+    description: Stable fictional behavioral-event identifier.
+    pii: false
+    classification: internal
+  - name: customer_id
+    type: string
+    nullable: false
+    description: Customer associated with the event.
+    pii: false
+    classification: internal
+  - name: session_id
+    type: string
+    nullable: false
+    description: Fictional digital session containing the event.
+    pii: false
+    classification: internal
+  - name: event_name
+    type: string
+    nullable: false
+    description: Standardized behavioral action name.
+    pii: false
+    classification: public
+  - name: channel
+    type: string
+    nullable: false
+    description: Digital experience where the event occurred.
+    pii: false
+    classification: public
+  - name: event_timestamp
+    type: timestamp
+    nullable: false
+    description: Timestamp when the behavior occurred.
+    pii: false
+    classification: internal
+  - name: source_loaded_at
+    type: timestamp
+    nullable: false
+    description: Timestamp when the record was extracted for analytical processing.
+    pii: false
+    classification: internal

@@ -8,4 +8,4 @@ Run validation from the repository root:
 python -m data_architecture.contracts contracts/sources
 ```
 
-The initial customer and order contracts establish the standard. DA1 will add order items, campaign touchpoints, experiment exposures, and customer events before staging implementation begins.
+DA1 includes six governed operational sources: customers, orders, order items, campaign touchpoints, experiment exposures, and customer events. Together they support customer value, experimentation, campaign-performance, and Machine Learning feature use cases.
