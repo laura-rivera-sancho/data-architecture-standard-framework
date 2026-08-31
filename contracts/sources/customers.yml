@@ -1,0 +1,60 @@
+version: 1
+source: customers
+owner: customer-data@fictional.example
+description: Current operational customer profile used to resolve identity and lifecycle attributes.
+grain: One current source record per customer_id.
+primary_key:
+  - customer_id
+freshness:
+  loaded_at_field: source_loaded_at
+  warn_after_hours: 24
+  error_after_hours: 48
+fields:
+  - name: customer_id
+    type: string
+    nullable: false
+    description: Stable fictional customer identifier.
+    pii: false
+    classification: internal
+  - name: email_hash
+    type: string
+    nullable: true
+    description: Deterministic synthetic email hash used only for identity-resolution demonstrations.
+    pii: true
+    classification: restricted
+  - name: acquisition_channel
+    type: string
+    nullable: false
+    description: Marketing channel credited with initial customer acquisition.
+    pii: false
+    classification: internal
+  - name: country_code
+    type: string
+    nullable: false
+    description: Synthetic two-character country code for the customer profile.
+    pii: false
+    classification: internal
+  - name: created_at
+    type: timestamp
+    nullable: false
+    description: Timestamp when the customer profile was created.
+    pii: false
+    classification: internal
+  - name: marketing_consent
+    type: boolean
+    nullable: false
+    description: Whether the fictional customer is eligible for marketing communication.
+    pii: true
+    classification: confidential
+  - name: source_updated_at
+    type: timestamp
+    nullable: false
+    description: Timestamp of the latest change in the source system.
+    pii: false
+    classification: internal
+  - name: source_loaded_at
+    type: timestamp
+    nullable: false
+    description: Timestamp when the record was extracted for analytical processing.
+    pii: false
+    classification: internal

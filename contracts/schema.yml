@@ -1,0 +1,28 @@
+contract_version: 1
+required_top_level_keys:
+  - version
+  - source
+  - owner
+  - description
+  - grain
+  - primary_key
+  - freshness
+  - fields
+allowed_types:
+  - string
+  - integer
+  - decimal
+  - boolean
+  - date
+  - timestamp
+allowed_classifications:
+  - public
+  - internal
+  - confidential
+  - restricted
+governance_rules:
+  - primary-key fields must exist and be non-nullable
+  - freshness warn_after_hours must be less than error_after_hours
+  - field names must be unique within a source
+  - pii fields cannot use the public classification
+  - every field must have a business description

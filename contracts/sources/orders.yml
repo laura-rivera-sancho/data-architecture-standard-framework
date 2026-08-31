@@ -1,0 +1,60 @@
+version: 1
+source: orders
+owner: commerce-data@fictional.example
+description: Order-header records representing placed, completed, cancelled, and refunded orders.
+grain: One record per order_id.
+primary_key:
+  - order_id
+freshness:
+  loaded_at_field: source_loaded_at
+  warn_after_hours: 6
+  error_after_hours: 12
+fields:
+  - name: order_id
+    type: string
+    nullable: false
+    description: Stable fictional order identifier.
+    pii: false
+    classification: internal
+  - name: customer_id
+    type: string
+    nullable: false
+    description: Customer identifier associated with the order.
+    pii: false
+    classification: internal
+  - name: order_timestamp
+    type: timestamp
+    nullable: false
+    description: Timestamp when the order was placed.
+    pii: false
+    classification: internal
+  - name: order_status
+    type: string
+    nullable: false
+    description: Current operational lifecycle status of the order.
+    pii: false
+    classification: internal
+  - name: currency_code
+    type: string
+    nullable: false
+    description: Three-character transaction currency code.
+    pii: false
+    classification: public
+  - name: gross_amount
+    type: decimal
+    nullable: false
+    description: Order amount before discounts, tax, refunds, and cancellations.
+    pii: false
+    classification: confidential
+  - name: discount_amount
+    type: decimal
+    nullable: false
+    description: Total promotional discount applied to the order.
+    pii: false
+    classification: confidential
+  - name: source_loaded_at
+    type: timestamp
+    nullable: false
+    description: Timestamp when the record was extracted for analytical processing.
+    pii: false
+    classification: internal

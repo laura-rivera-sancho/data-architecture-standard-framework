@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this framework, please cite it using the metadata below."
+title: "Data Architecture Standard Framework"
+type: software
+authors:
+  - family-names: "Rivera"
+    given-names: "Laura"
+repository-code: "https://github.com/laura-rivera-sancho/data-architecture-standard-framework"
+url: "https://github.com/laura-rivera-sancho/data-architecture-standard-framework"
+license: MIT
+version: 0.1.0
+date-released: 2026-08-30
+keywords:
+  - data architecture
+  - dimensional modeling
+  - data contracts
+  - data marts
+  - analytics engineering
+  - semantic layer
