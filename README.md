@@ -73,7 +73,7 @@ See the [architecture overview](docs/architecture_overview.md) for layer respons
 | **DA1 — Source Contracts & Staging** | Complete | Governed inputs, freshness expectations, identifiers, staging conventions, and automated checks |
 | **DA2 — Dimensional Warehouse** | Complete | Defensible facts, conformed dimensions, declared grain, history strategy, and business rules |
 | **DA3 — Business Data Marts** | Complete | Reusable data products for customer, marketing, experimentation, ML, and executive decisions |
-| **DA4 — Semantic Governance & Operations** | In review | Trusted metrics, lineage, ownership, observability, performance, and change management |
+| **DA4 — Semantic Governance & Operations** | Complete | Trusted metrics, lineage, ownership, observability, performance, and change management |
 
 ## Repository map
 

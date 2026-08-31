@@ -93,7 +93,7 @@ Completed evidence:
 
 ## DA4 — Semantic Governance & Operations
 
-**Status:** In review
+**Status:** Complete
 
 **Outcome:** Consumers can discover, trust, operate, and safely change published analytical data products.
 
