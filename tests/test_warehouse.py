@@ -47,11 +47,13 @@ def test_build_creates_expected_dimensions_facts_and_manifest(warehouse_build):
 
     assert manifest["engine"] == "duckdb"
     assert manifest["engine_version"] == "1.5.5"
-    assert len(manifest["table_counts"]) == 10
+    assert len(manifest["table_counts"]) == 16
     assert manifest["table_counts"]["fact_orders"] == 60
     assert manifest["table_counts"]["fact_campaign_touchpoints"] == 80
     assert manifest["table_counts"]["fact_customer_events"] == 100
-    assert len(manifest["quality_checks"]) == 12
+    assert manifest["table_counts"]["marts.customer_360"] == 30
+    assert manifest["table_counts"]["marts.ml_features"] == 30
+    assert len(manifest["quality_checks"]) == 22
     assert all(check["passed"] for check in persisted_manifest["quality_checks"])
 
 
@@ -112,6 +114,65 @@ def test_fact_grain_and_header_line_reconciliation(warehouse_build):
     assert duplicate_orders == 0
     assert duplicate_items == 0
     assert reconciliation_failures == 0
+
+
+def test_business_marts_have_declared_grain_and_reconcile(warehouse_build):
+    database, _, _ = warehouse_build
+    with duckdb.connect(str(database), read_only=True) as connection:
+        duplicate_customer_rows = connection.execute(
+            """
+            SELECT COUNT(*) FROM (
+                SELECT customer_key FROM marts.customer_360
+                GROUP BY customer_key HAVING COUNT(*) > 1
+            )
+            """
+        ).fetchone()[0]
+        invalid_rfm_scores = connection.execute(
+            """
+            SELECT COUNT(*) FROM marts.rfm_segments
+            WHERE recency_score NOT BETWEEN 1 AND 5
+               OR frequency_score NOT BETWEEN 1 AND 5
+               OR monetary_score NOT BETWEEN 1 AND 5
+            """
+        ).fetchone()[0]
+        campaign_reconciliation = connection.execute(
+            """
+            SELECT
+                (SELECT SUM(touchpoint_count) FROM marts.campaign_performance),
+                (SELECT COUNT(*) FROM warehouse.fact_campaign_touchpoints)
+            """
+        ).fetchone()
+        experiment_reconciliation = connection.execute(
+            """
+            SELECT
+                (SELECT SUM(assignments) FROM marts.experiment_results),
+                (SELECT COUNT(*) FROM warehouse.fact_experiment_exposures)
+            """
+        ).fetchone()
+
+    assert duplicate_customer_rows == 0
+    assert invalid_rfm_scores == 0
+    assert campaign_reconciliation[0] == campaign_reconciliation[1]
+    assert experiment_reconciliation[0] == experiment_reconciliation[1]
+
+
+def test_ml_features_are_point_in_time_and_target_free(warehouse_build):
+    database, _, _ = warehouse_build
+    with duckdb.connect(str(database), read_only=True) as connection:
+        columns = {
+            row[1]
+            for row in connection.execute("PRAGMA table_info('marts.ml_features')").fetchall()
+        }
+        row_count, distinct_customers, distinct_dates = connection.execute(
+            """
+            SELECT COUNT(*), COUNT(DISTINCT customer_key), COUNT(DISTINCT as_of_date)
+            FROM marts.ml_features
+            """
+        ).fetchone()
+
+    assert row_count == distinct_customers == 30
+    assert distinct_dates == 1
+    assert not any(column.startswith("target_") for column in columns)
 
 
 def test_late_arriving_customer_uses_unknown_member(tmp_path):

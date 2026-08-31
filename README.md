@@ -20,6 +20,8 @@ All companies, identifiers, and future sample datasets are fictional or syntheti
 | DA1 result | [DA1 evidence](docs/da1_evidence.md) | Reference-run metrics, reliability controls, failure evidence, and limitations |
 | Dimensional design | [Dimensional model](docs/dimensional_model.md) | Declared fact grain, conformed dimensions, customer history, and late-arriving data |
 | DA2 result | [DA2 evidence](docs/da2_evidence.md) | Warehouse table counts, quality results, reconciliation, and limitations |
+| Business data products | [Mart catalog](docs/mart_catalog.md) | Audience, decision, grain, ownership, measures, dependencies, and limitations |
+| DA3 result | [DA3 evidence](docs/da3_evidence.md) | Reference outputs, reconciliation controls, ML leakage boundary, and review cautions |
 | Engineering quality | [Automated tests](tests) | Contract, repository-integrity, and critical-rule checks |
 | Design decisions | [ADR-001](docs/decisions/ADR-001-portfolio-platform.md) | Explicit tradeoffs and implementation boundaries |
 
@@ -65,8 +67,8 @@ See the [architecture overview](docs/architecture_overview.md) for layer respons
 | Milestone | Status | Outcome |
 |---|---|---|
 | **DA1 — Source Contracts & Staging** | Complete | Governed inputs, freshness expectations, identifiers, staging conventions, and automated checks |
-| **DA2 — Dimensional Warehouse** | In review | Defensible facts, conformed dimensions, declared grain, history strategy, and business rules |
-| **DA3 — Business Data Marts** | Planned | Reusable data products for customer, marketing, experimentation, ML, and executive decisions |
+| **DA2 — Dimensional Warehouse** | Complete | Defensible facts, conformed dimensions, declared grain, history strategy, and business rules |
+| **DA3 — Business Data Marts** | In review | Reusable data products for customer, marketing, experimentation, ML, and executive decisions |
 | **DA4 — Semantic Governance & Operations** | Planned | Trusted metrics, lineage, ownership, observability, performance, and change management |
 
 ## Repository map
@@ -83,7 +85,9 @@ data-architecture-standard-framework/
 │   ├── source_to_staging_mapping.md
 │   ├── staging_failure_runbook.md
 │   ├── dimensional_model.md
-│   └── da2_evidence.md
+│   ├── mart_catalog.md
+│   ├── da2_evidence.md
+│   └── da3_evidence.md
 ├── src/data_architecture/   # Reusable validation and modeling utilities
 ├── tests/                   # Contract and repository-integrity tests
 ├── warehouse/               # Ordered SQL models and declared quality checks

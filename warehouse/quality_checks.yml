@@ -117,3 +117,110 @@ checks:
               - (SELECT COUNT(*) FROM warehouse.fact_experiment_exposures))
         + ABS((SELECT COUNT(*) FROM staging.customer_events)
               - (SELECT COUNT(*) FROM warehouse.fact_customer_events))
+  - name: customer_360_grain
+    description: Customer 360 contains at most one row per current customer.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*) FROM (
+          SELECT customer_key
+          FROM marts.customer_360
+          GROUP BY customer_key
+          HAVING COUNT(*) > 1
+      )
+  - name: customer_360_coverage
+    description: Customer 360 covers every non-unknown current customer.
+    expected_value: 0
+    sql: |
+      SELECT ABS(
+          (SELECT COUNT(*) FROM marts.customer_360)
+          - (SELECT COUNT(*) FROM warehouse.dim_customer WHERE customer_key <> 0 AND is_current)
+      )
+  - name: rfm_grain_and_score_bounds
+    description: RFM has one row per purchasing customer and scores remain between one and five.
+    expected_value: 0
+    sql: |
+      SELECT
+          (SELECT COUNT(*) FROM (
+              SELECT customer_key
+              FROM marts.rfm_segments
+              GROUP BY customer_key
+              HAVING COUNT(*) > 1
+          ))
+        + (SELECT COUNT(*)
+           FROM marts.rfm_segments
+           WHERE recency_score NOT BETWEEN 1 AND 5
+              OR frequency_score NOT BETWEEN 1 AND 5
+              OR monetary_score NOT BETWEEN 1 AND 5)
+  - name: campaign_performance_grain
+    description: Campaign performance contains one row per campaign and channel.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*) FROM (
+          SELECT campaign_key, channel_key
+          FROM marts.campaign_performance
+          GROUP BY campaign_key, channel_key
+          HAVING COUNT(*) > 1
+      )
+  - name: campaign_performance_reconciliation
+    description: Campaign mart counts and cost reconcile to the touchpoint fact.
+    expected_value: 0
+    sql: |
+      SELECT
+          ABS((SELECT SUM(touchpoint_count) FROM marts.campaign_performance)
+              - (SELECT COUNT(*) FROM warehouse.fact_campaign_touchpoints))
+        + ABS((SELECT SUM(delivered_count) FROM marts.campaign_performance)
+              - (SELECT SUM(delivered_count) FROM warehouse.fact_campaign_touchpoints))
+        + ABS((SELECT SUM(opened_count) FROM marts.campaign_performance)
+              - (SELECT SUM(opened_count) FROM warehouse.fact_campaign_touchpoints))
+        + ABS((SELECT SUM(clicked_count) FROM marts.campaign_performance)
+              - (SELECT SUM(clicked_count) FROM warehouse.fact_campaign_touchpoints))
+        + ABS((SELECT SUM(converted_count) FROM marts.campaign_performance)
+              - (SELECT SUM(converted_count) FROM warehouse.fact_campaign_touchpoints))
+        + ABS((SELECT SUM(attributed_cost) FROM marts.campaign_performance)
+              - (SELECT SUM(attributed_cost) FROM warehouse.fact_campaign_touchpoints))
+  - name: experiment_results_grain
+    description: Experiment results contain one row per experiment and assigned variant.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*) FROM (
+          SELECT experiment_id, variant
+          FROM marts.experiment_results
+          GROUP BY experiment_id, variant
+          HAVING COUNT(*) > 1
+      )
+  - name: experiment_assignment_reconciliation
+    description: Experiment mart assignments reconcile to exposure facts.
+    expected_value: 0
+    sql: |
+      SELECT ABS(
+          (SELECT SUM(assignments) FROM marts.experiment_results)
+          - (SELECT COUNT(*) FROM warehouse.fact_experiment_exposures)
+      )
+  - name: ml_feature_grain
+    description: The feature mart contains one row per customer and as-of date.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*) FROM (
+          SELECT customer_key, as_of_date
+          FROM marts.ml_features
+          GROUP BY customer_key, as_of_date
+          HAVING COUNT(*) > 1
+      )
+  - name: executive_growth_grain
+    description: Executive growth contains one row per calendar month.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*) FROM (
+          SELECT month_start
+          FROM marts.executive_growth
+          GROUP BY month_start
+          HAVING COUNT(*) > 1
+      )
+  - name: executive_revenue_reconciliation
+    description: Executive monthly revenue reconciles to recognized order revenue.
+    expected_value: 0
+    sql: |
+      SELECT ABS(
+          (SELECT SUM(recognized_revenue) FROM marts.executive_growth)
+          - (SELECT SUM(recognized_revenue) FROM warehouse.fact_orders)
+      )

@@ -32,7 +32,7 @@ Acceptance criteria:
 
 ## DA2 — Dimensional Warehouse
 
-**Status:** In review
+**Status:** Complete
 
 **Outcome:** Reusable facts and conformed dimensions provide stable analytical grain and business meaning.
 
@@ -65,11 +65,11 @@ Completed evidence:
 
 ## DA3 — Business Data Marts
 
-**Status:** Planned
+**Status:** In review
 
 **Outcome:** Role-oriented analytical products answer defined business questions without repeated metric reconstruction.
 
-Planned marts:
+Published marts:
 
 - `customer_360`
 - `rfm_segments`
@@ -79,6 +79,17 @@ Planned marts:
 - `executive_growth`
 
 Each mart must declare its audience, decision, grain, dimensions, measures, update cadence, owner, upstream dependencies, and limitations.
+
+Completed evidence:
+
+- [x] fanout-safe `customer_360` with reconciled customer coverage
+- [x] deterministic RFM measures, quintile scores, and action-oriented segments
+- [x] campaign-channel counts, rates, cost, and cost-per-conversion
+- [x] descriptive experiment outcomes within a declared 14-day window
+- [x] target-free, point-in-time ML feature snapshot with leakage guidance
+- [x] monthly executive growth product with a complete calendar spine
+- [x] mart catalog covering audience, decision, grain, cadence, owner, dependencies, measures, and limitations
+- [x] automated mart grain, score-bound, coverage, and financial reconciliation checks
 
 ## DA4 — Semantic Governance & Operations
 

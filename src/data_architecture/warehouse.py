@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 from dataclasses import asdict, dataclass
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
@@ -36,6 +37,15 @@ WAREHOUSE_TABLES = [
     "fact_campaign_touchpoints",
     "fact_experiment_exposures",
     "fact_customer_events",
+]
+
+MART_TABLES = [
+    "customer_360",
+    "rfm_segments",
+    "campaign_performance",
+    "experiment_results",
+    "ml_features",
+    "executive_growth",
 ]
 
 
@@ -79,12 +89,13 @@ def run_quality_checks(
     results: list[QualityCheckResult] = []
     for check in checks:
         actual = connection.execute(check["sql"]).fetchone()[0]
+        serializable_actual = float(actual) if isinstance(actual, Decimal) else actual
         expected = check["expected_value"]
         results.append(
             QualityCheckResult(
                 name=check["name"],
                 description=check["description"],
-                actual_value=actual,
+                actual_value=serializable_actual,
                 expected_value=expected,
                 passed=actual == expected,
             )
@@ -96,10 +107,15 @@ def run_quality_checks(
 
 
 def _table_counts(connection: duckdb.DuckDBPyConnection) -> dict[str, int]:
-    return {
+    warehouse_counts = {
         table: connection.execute(f"SELECT COUNT(*) FROM warehouse.{table}").fetchone()[0]
         for table in WAREHOUSE_TABLES
     }
+    mart_counts = {
+        f"marts.{table}": connection.execute(f"SELECT COUNT(*) FROM marts.{table}").fetchone()[0]
+        for table in MART_TABLES
+    }
+    return warehouse_counts | mart_counts
 
 
 def build_warehouse(
@@ -151,7 +167,7 @@ def main() -> None:  # pragma: no cover - command-line wrapper
         args.manifest,
     )
     print(
-        f"Built {len(manifest['table_counts'])} warehouse tables with "
+        f"Built {len(manifest['table_counts'])} warehouse and mart data products with "
         f"{len(manifest['quality_checks'])} passing quality checks."
     )
 

@@ -31,6 +31,8 @@ def test_documentation_links_target_existing_local_files():
         "docs/da1_evidence.md",
         "docs/dimensional_model.md",
         "docs/da2_evidence.md",
+        "docs/mart_catalog.md",
+        "docs/da3_evidence.md",
         "contracts/sources/customers.yml",
         "src/data_architecture/contracts.py",
         "src/data_architecture/synthetic_data.py",
@@ -39,6 +41,7 @@ def test_documentation_links_target_existing_local_files():
         "warehouse/sql/00_staging_views.sql",
         "warehouse/sql/10_dimensions.sql",
         "warehouse/sql/20_facts.sql",
+        "warehouse/sql/30_marts.sql",
         "warehouse/quality_checks.yml",
         "tests",
     ]
