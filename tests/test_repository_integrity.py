@@ -6,6 +6,7 @@ ROOT = Path(__file__).parents[1]
 def test_required_repository_files_exist():
     required = [
         "README.md",
+        "data_architecture_fundamentals.md",
         "ROADMAP.md",
         "LICENSE",
         "CITATION.cff",
@@ -23,6 +24,7 @@ def test_required_repository_files_exist():
 
 def test_documentation_links_target_existing_local_files():
     expected = [
+        "data_architecture_fundamentals.md",
         "docs/architecture_overview.md",
         "docs/decisions/ADR-001-portfolio-platform.md",
         "docs/decisions/ADR-002-duckdb-warehouse.md",

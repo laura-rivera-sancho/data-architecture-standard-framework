@@ -12,6 +12,7 @@ All companies, identifiers, and future sample datasets are fictional or syntheti
 
 | What to assess | Start here | What it demonstrates |
 |---|---|---|
+| Interview preparation | [Data architecture fundamentals](data_architecture_fundamentals.md) | Core concepts, design tradeoffs, practice questions, and project talking points |
 | Portfolio scope | [Roadmap](ROADMAP.md) | Four milestone sequence and completion gates |
 | Architecture judgment | [Architecture overview](docs/architecture_overview.md) | Layering, ownership, governance, and downstream consumers |
 | Data-contract design | [Customer source contract](contracts/sources/customers.yml) | Grain, keys, freshness, field semantics, and data classification |
@@ -98,6 +99,7 @@ data-architecture-standard-framework/
 ├── src/data_architecture/   # Reusable validation and modeling utilities
 ├── tests/                   # Contract and repository-integrity tests
 ├── warehouse/               # Ordered SQL models and declared quality checks
+├── data_architecture_fundamentals.md # Interview concepts, tradeoffs, and practice questions
 ├── ROADMAP.md               # Pillar milestones and acceptance criteria
 └── README.md                # Recruiter-facing repository landing page
 ```
