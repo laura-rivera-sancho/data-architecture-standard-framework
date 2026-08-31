@@ -1,0 +1,32 @@
+version: 1
+products:
+  - name: marts.customer_360
+    owner: analytics-engineering@fictional.example
+    classification: confidential
+    upstream: [warehouse.dim_customer, warehouse.fact_orders, warehouse.fact_customer_events, warehouse.fact_campaign_touchpoints, warehouse.fact_experiment_exposures]
+    consumers: [CRM activation, lifecycle analytics]
+  - name: marts.rfm_segments
+    owner: customer-analytics@fictional.example
+    classification: confidential
+    upstream: [warehouse.dim_customer, warehouse.fact_orders]
+    consumers: [RFM analytics, retention strategy]
+  - name: marts.campaign_performance
+    owner: marketing-analytics@fictional.example
+    classification: internal
+    upstream: [warehouse.dim_campaign, warehouse.dim_channel, warehouse.fact_campaign_touchpoints]
+    consumers: [campaign optimization, executive growth reporting]
+  - name: marts.experiment_results
+    owner: experimentation-analytics@fictional.example
+    classification: internal
+    upstream: [warehouse.fact_experiment_exposures, warehouse.fact_orders]
+    consumers: [split testing, multivariate testing]
+  - name: marts.ml_features
+    owner: data-science-platform@fictional.example
+    classification: confidential
+    upstream: [marts.customer_360, marts.rfm_segments, warehouse.dim_date, warehouse.fact_customer_events, warehouse.fact_campaign_touchpoints]
+    consumers: [campaign response propensity]
+  - name: marts.executive_growth
+    owner: growth-analytics@fictional.example
+    classification: confidential
+    upstream: [warehouse.dim_date, warehouse.dim_customer, warehouse.fact_orders, warehouse.fact_campaign_touchpoints]
+    consumers: [executive growth dashboard]

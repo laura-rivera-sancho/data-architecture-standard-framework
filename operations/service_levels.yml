@@ -1,0 +1,47 @@
+version: 1
+defaults:
+  query_latency_warning_ms: 250
+  query_latency_error_ms: 1000
+products:
+  - name: marts.customer_360
+    priority: critical
+    owner: analytics-engineering@fictional.example
+    minimum_rows: 1
+    freshness_warning_hours: 24
+    freshness_error_hours: 36
+    incident_response_hours: 2
+  - name: marts.rfm_segments
+    priority: high
+    owner: customer-analytics@fictional.example
+    minimum_rows: 1
+    freshness_warning_hours: 24
+    freshness_error_hours: 36
+    incident_response_hours: 4
+  - name: marts.campaign_performance
+    priority: high
+    owner: marketing-analytics@fictional.example
+    minimum_rows: 1
+    freshness_warning_hours: 24
+    freshness_error_hours: 36
+    incident_response_hours: 4
+  - name: marts.experiment_results
+    priority: high
+    owner: experimentation-analytics@fictional.example
+    minimum_rows: 1
+    freshness_warning_hours: 24
+    freshness_error_hours: 36
+    incident_response_hours: 4
+  - name: marts.ml_features
+    priority: critical
+    owner: data-science-platform@fictional.example
+    minimum_rows: 1
+    freshness_warning_hours: 24
+    freshness_error_hours: 36
+    incident_response_hours: 2
+  - name: marts.executive_growth
+    priority: high
+    owner: growth-analytics@fictional.example
+    minimum_rows: 1
+    freshness_warning_hours: 24
+    freshness_error_hours: 36
+    incident_response_hours: 4

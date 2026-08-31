@@ -38,7 +38,7 @@ The platform turns fragmented omnichannel operational data into governed analyti
 2. Staging tests protect identifiers, types, accepted values, and freshness.
 3. Warehouse tests protect grain, relationships, reconciliation, and history rules.
 4. Mart tests protect published business invariants and metric consistency.
-5. Observability monitors freshness, volume, schema changes, and failed transformations.
+5. Executable governance monitors freshness, volume, lineage, ownership, metric validity, and query latency.
 
 ## Security and privacy posture
 
@@ -46,4 +46,4 @@ The portfolio uses synthetic data only. The architecture still models profession
 
 ## Implementation boundary
 
-The initial implementation will use local, portable tooling so reviewers can reproduce it without a cloud account. Cloud deployment patterns can be documented later, but they will not replace a working local reference implementation.
+The implementation uses local, portable tooling so reviewers can reproduce it without a cloud account. A production environment would add orchestration, access enforcement, durable storage, alert delivery, incremental processing, and historical SLO measurement while preserving the demonstrated contracts and publication gates.

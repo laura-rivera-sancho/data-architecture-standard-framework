@@ -65,7 +65,7 @@ Completed evidence:
 
 ## DA3 — Business Data Marts
 
-**Status:** In review
+**Status:** Complete
 
 **Outcome:** Role-oriented analytical products answer defined business questions without repeated metric reconstruction.
 
@@ -93,11 +93,20 @@ Completed evidence:
 
 ## DA4 — Semantic Governance & Operations
 
-**Status:** Planned
+**Status:** In review
 
 **Outcome:** Consumers can discover, trust, operate, and safely change published analytical data products.
 
-Deliverables include governed metric definitions, lineage, ownership, documentation, freshness monitoring, incident and change-management procedures, performance evidence, and a final stakeholder architecture readout.
+Completed evidence:
+
+- [x] eight executable metric definitions with grain, source, aggregation behavior, owner, and caveat
+- [x] machine-readable lineage for all six published data products
+- [x] aligned ownership, classification, priority, freshness, volume, and incident-response expectations
+- [x] automated rejection of incomplete metrics, broken lineage, owner drift, and invalid thresholds
+- [x] operational report covering source freshness, product volume, and semantic-query latency
+- [x] incident response and recovery runbook
+- [x] backward-compatible, breaking-change, deprecation, and rollback procedures
+- [x] final stakeholder architecture readout and documented production-evolution boundary
 
 ## Delivery order
 

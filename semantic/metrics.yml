@@ -1,0 +1,117 @@
+version: 1
+metrics:
+  - id: recognized_revenue
+    name: Recognized revenue
+    description: Revenue from completed orders after discounts; cancelled and refunded orders contribute zero.
+    owner: growth-analytics@fictional.example
+    domain: commerce
+    source: warehouse.fact_orders
+    grain: Additive across orders and calendar periods.
+    type: sum
+    format: currency_usd
+    dimensions: [order_status, order_date]
+    sql: SELECT COALESCE(SUM(recognized_revenue), 0) FROM warehouse.fact_orders
+    caveat: Assumes all reference transactions use USD.
+  - id: completed_orders
+    name: Completed orders
+    description: Count of orders whose operational status is completed.
+    owner: growth-analytics@fictional.example
+    domain: commerce
+    source: warehouse.fact_orders
+    grain: Additive across orders and calendar periods.
+    type: count
+    format: integer
+    dimensions: [order_date]
+    sql: SELECT COUNT(*) FROM warehouse.fact_orders WHERE order_status = 'completed'
+    caveat: An order is counted once, independent of its number of line items.
+  - id: average_order_value
+    name: Average order value
+    description: Recognized revenue divided by completed orders.
+    owner: growth-analytics@fictional.example
+    domain: commerce
+    source: warehouse.fact_orders
+    grain: Recomputed for the selected population; not additive.
+    type: ratio
+    format: currency_usd
+    dimensions: [order_date]
+    sql: |
+      SELECT COALESCE(
+          SUM(recognized_revenue) / NULLIF(COUNT(*) FILTER (WHERE order_status = 'completed'), 0),
+          0
+      ) FROM warehouse.fact_orders
+    caveat: Uses recognized revenue rather than gross order amount.
+  - id: known_customers
+    name: Known customers
+    description: Count of current, non-unknown customer dimension members.
+    owner: customer-analytics@fictional.example
+    domain: customer
+    source: warehouse.dim_customer
+    grain: Snapshot count at the latest completed warehouse build.
+    type: count_distinct
+    format: integer
+    dimensions: [country_code, acquisition_channel, marketing_consent]
+    sql: |
+      SELECT COUNT(*)
+      FROM warehouse.dim_customer
+      WHERE customer_key <> 0 AND is_current
+    caveat: Customer identity is limited to the fictional source-system key.
+  - id: campaign_conversion_rate
+    name: Campaign conversion rate
+    description: Converted campaign interactions divided by delivered campaign interactions.
+    owner: marketing-analytics@fictional.example
+    domain: marketing
+    source: warehouse.fact_campaign_touchpoints
+    grain: Recomputed for the selected campaign and channel population; not additive.
+    type: ratio
+    format: percentage
+    dimensions: [campaign, channel]
+    sql: |
+      SELECT COALESCE(
+          SUM(converted_count) / NULLIF(SUM(delivered_count), 0),
+          0
+      ) FROM warehouse.fact_campaign_touchpoints
+    caveat: Source-reported conversion events do not constitute multi-touch attribution.
+  - id: campaign_cost_per_conversion
+    name: Campaign cost per conversion
+    description: Attributed campaign cost divided by converted campaign interactions.
+    owner: marketing-analytics@fictional.example
+    domain: marketing
+    source: warehouse.fact_campaign_touchpoints
+    grain: Recomputed for the selected campaign and channel population; not additive.
+    type: ratio
+    format: currency_usd
+    dimensions: [campaign, channel]
+    sql: |
+      SELECT COALESCE(
+          SUM(attributed_cost) / NULLIF(SUM(converted_count), 0),
+          0
+      ) FROM warehouse.fact_campaign_touchpoints
+    caveat: Cost is attributed at the source touchpoint and is not an incremental return estimate.
+  - id: experiment_conversion_rate
+    name: Experiment conversion rate
+    description: Assigned customers with a completed order within 14 days divided by assignments.
+    owner: experimentation-analytics@fictional.example
+    domain: experimentation
+    source: marts.experiment_results
+    grain: Recomputed by experiment and variant; not additive.
+    type: ratio
+    format: percentage
+    dimensions: [experiment_id, variant]
+    sql: |
+      SELECT COALESCE(
+          SUM(converted_assignments) / NULLIF(SUM(assignments), 0),
+          0
+      ) FROM marts.experiment_results
+    caveat: Descriptive outcome only; causal interpretation requires randomization and uncertainty checks.
+  - id: purchasing_customers
+    name: Purchasing customers
+    description: Customers with at least one completed order in the loaded history.
+    owner: customer-analytics@fictional.example
+    domain: customer
+    source: marts.rfm_segments
+    grain: Snapshot count at the RFM analysis date.
+    type: count
+    format: integer
+    dimensions: [rfm_segment]
+    sql: SELECT COUNT(*) FROM marts.rfm_segments
+    caveat: Segment membership is relative to the current loaded population.

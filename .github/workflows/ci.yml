@@ -54,5 +54,9 @@ jobs:
           python -m data_architecture.staging data/generated/raw contracts/sources data/generated/staged --staged-at 2026-08-30T13:00:00Z
           python -m data_architecture.warehouse data/generated/portfolio.duckdb data/generated/staged --manifest data/generated/warehouse_manifest.json
 
+      - name: Validate semantic governance and operations
+        run: |
+          python -m data_architecture.governance data/generated/portfolio.duckdb data/generated/warehouse_manifest.json data/generated/staged/staging_manifest.json --report data/generated/governance_report.json
+
       - name: Run tests
         run: pytest --cov --cov-report=term-missing

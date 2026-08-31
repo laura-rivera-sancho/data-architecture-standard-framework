@@ -22,6 +22,10 @@ All companies, identifiers, and future sample datasets are fictional or syntheti
 | DA2 result | [DA2 evidence](docs/da2_evidence.md) | Warehouse table counts, quality results, reconciliation, and limitations |
 | Business data products | [Mart catalog](docs/mart_catalog.md) | Audience, decision, grain, ownership, measures, dependencies, and limitations |
 | DA3 result | [DA3 evidence](docs/da3_evidence.md) | Reference outputs, reconciliation controls, ML leakage boundary, and review cautions |
+| Governed meaning | [Semantic metric catalog](docs/semantic_metric_catalog.md) | Executable metric definitions, owners, aggregation behavior, and caveats |
+| Operability | [Operations runbook](docs/operations_runbook.md) | Service signals, incident severity, recovery, and communication expectations |
+| Final architecture | [Stakeholder readout](docs/stakeholder_readout.md) | Business value, design choices, risks, and production evolution |
+| DA4 result | [DA4 evidence](docs/da4_evidence.md) | Governance validation, lineage, service levels, and performance evidence |
 | Engineering quality | [Automated tests](tests) | Contract, repository-integrity, and critical-rule checks |
 | Design decisions | [ADR-001](docs/decisions/ADR-001-portfolio-platform.md) | Explicit tradeoffs and implementation boundaries |
 
@@ -68,8 +72,8 @@ See the [architecture overview](docs/architecture_overview.md) for layer respons
 |---|---|---|
 | **DA1 — Source Contracts & Staging** | Complete | Governed inputs, freshness expectations, identifiers, staging conventions, and automated checks |
 | **DA2 — Dimensional Warehouse** | Complete | Defensible facts, conformed dimensions, declared grain, history strategy, and business rules |
-| **DA3 — Business Data Marts** | In review | Reusable data products for customer, marketing, experimentation, ML, and executive decisions |
-| **DA4 — Semantic Governance & Operations** | Planned | Trusted metrics, lineage, ownership, observability, performance, and change management |
+| **DA3 — Business Data Marts** | Complete | Reusable data products for customer, marketing, experimentation, ML, and executive decisions |
+| **DA4 — Semantic Governance & Operations** | In review | Trusted metrics, lineage, ownership, observability, performance, and change management |
 
 ## Repository map
 
@@ -87,7 +91,10 @@ data-architecture-standard-framework/
 │   ├── dimensional_model.md
 │   ├── mart_catalog.md
 │   ├── da2_evidence.md
-│   └── da3_evidence.md
+│   ├── da3_evidence.md
+│   └── da4_evidence.md
+├── operations/              # Service-level and operational declarations
+├── semantic/                # Executable metrics and product lineage
 ├── src/data_architecture/   # Reusable validation and modeling utilities
 ├── tests/                   # Contract and repository-integrity tests
 ├── warehouse/               # Ordered SQL models and declared quality checks
@@ -107,6 +114,7 @@ python -m data_architecture.contracts contracts/sources
 python -m data_architecture.synthetic_data data/generated/raw
 python -m data_architecture.staging data/generated/raw contracts/sources data/generated/staged --staged-at 2026-08-30T13:00:00Z
 python -m data_architecture.warehouse data/generated/portfolio.duckdb data/generated/staged --manifest data/generated/warehouse_manifest.json
+python -m data_architecture.governance data/generated/portfolio.duckdb data/generated/warehouse_manifest.json data/generated/staged/staging_manifest.json --report data/generated/governance_report.json
 ruff check .
 pytest
 ```
