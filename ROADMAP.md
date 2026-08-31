@@ -8,7 +8,7 @@ A milestone is complete only when it includes documented business purpose and gr
 
 ## DA1 — Source Contracts & Staging
 
-**Status:** In review
+**Status:** Complete
 
 **Outcome:** Operational inputs become explicit, version-controlled interfaces before downstream modeling begins.
 
@@ -32,7 +32,7 @@ Acceptance criteria:
 
 ## DA2 — Dimensional Warehouse
 
-**Status:** Planned
+**Status:** In review
 
 **Outcome:** Reusable facts and conformed dimensions provide stable analytical grain and business meaning.
 
@@ -52,7 +52,16 @@ Planned conformed dimensions:
 - `dim_channel`
 - `dim_date`
 
-Acceptance criteria include declared grain, surrogate-key strategy, relationship tests, slowly changing dimension decisions, late-arriving data handling, reconciliation controls, and documented business rules.
+Completed evidence:
+
+- [x] declared fact grain and deterministic integer surrogate keys
+- [x] conformed customer, product, campaign, channel, and date dimensions
+- [x] customer Type 2 history columns and effective-date fact lookup
+- [x] reserved unknown members and a tested late-arriving-dimension path
+- [x] primary, unique, not-null, and foreign-key constraints
+- [x] relationship, grain, financial-rule, and source-to-fact reconciliation checks
+- [x] reproducible DuckDB build with inspectable SQL and an evidence manifest
+- [x] documented business rules, architecture tradeoffs, and limitations
 
 ## DA3 — Business Data Marts
 

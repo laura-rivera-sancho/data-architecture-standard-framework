@@ -18,6 +18,8 @@ All companies, identifiers, and future sample datasets are fictional or syntheti
 | Reusable implementation | [Contract validator](src/data_architecture/contracts.py) | Automated validation of contract structure and governance rules |
 | Staging design | [Source-to-staging mapping](docs/source_to_staging_mapping.md) | Type normalization, deduplication, traceability, and layer boundaries |
 | DA1 result | [DA1 evidence](docs/da1_evidence.md) | Reference-run metrics, reliability controls, failure evidence, and limitations |
+| Dimensional design | [Dimensional model](docs/dimensional_model.md) | Declared fact grain, conformed dimensions, customer history, and late-arriving data |
+| DA2 result | [DA2 evidence](docs/da2_evidence.md) | Warehouse table counts, quality results, reconciliation, and limitations |
 | Engineering quality | [Automated tests](tests) | Contract, repository-integrity, and critical-rule checks |
 | Design decisions | [ADR-001](docs/decisions/ADR-001-portfolio-platform.md) | Explicit tradeoffs and implementation boundaries |
 
@@ -62,8 +64,8 @@ See the [architecture overview](docs/architecture_overview.md) for layer respons
 
 | Milestone | Status | Outcome |
 |---|---|---|
-| **DA1 — Source Contracts & Staging** | In review | Governed inputs, freshness expectations, identifiers, staging conventions, and automated checks |
-| **DA2 — Dimensional Warehouse** | Planned | Defensible facts, conformed dimensions, declared grain, history strategy, and business rules |
+| **DA1 — Source Contracts & Staging** | Complete | Governed inputs, freshness expectations, identifiers, staging conventions, and automated checks |
+| **DA2 — Dimensional Warehouse** | In review | Defensible facts, conformed dimensions, declared grain, history strategy, and business rules |
 | **DA3 — Business Data Marts** | Planned | Reusable data products for customer, marketing, experimentation, ML, and executive decisions |
 | **DA4 — Semantic Governance & Operations** | Planned | Trusted metrics, lineage, ownership, observability, performance, and change management |
 
@@ -79,9 +81,12 @@ data-architecture-standard-framework/
 │   ├── decisions/           # Architecture decision records
 │   ├── architecture_overview.md
 │   ├── source_to_staging_mapping.md
-│   └── staging_failure_runbook.md
+│   ├── staging_failure_runbook.md
+│   ├── dimensional_model.md
+│   └── da2_evidence.md
 ├── src/data_architecture/   # Reusable validation and modeling utilities
 ├── tests/                   # Contract and repository-integrity tests
+├── warehouse/               # Ordered SQL models and declared quality checks
 ├── ROADMAP.md               # Pillar milestones and acceptance criteria
 └── README.md                # Recruiter-facing repository landing page
 ```
@@ -97,6 +102,7 @@ python -m pip install --requirement requirements-dev.txt
 python -m data_architecture.contracts contracts/sources
 python -m data_architecture.synthetic_data data/generated/raw
 python -m data_architecture.staging data/generated/raw contracts/sources data/generated/staged --staged-at 2026-08-30T13:00:00Z
+python -m data_architecture.warehouse data/generated/portfolio.duckdb data/generated/staged --manifest data/generated/warehouse_manifest.json
 ruff check .
 pytest
 ```

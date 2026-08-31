@@ -25,13 +25,21 @@ def test_documentation_links_target_existing_local_files():
     expected = [
         "docs/architecture_overview.md",
         "docs/decisions/ADR-001-portfolio-platform.md",
+        "docs/decisions/ADR-002-duckdb-warehouse.md",
         "docs/source_to_staging_mapping.md",
         "docs/staging_failure_runbook.md",
         "docs/da1_evidence.md",
+        "docs/dimensional_model.md",
+        "docs/da2_evidence.md",
         "contracts/sources/customers.yml",
         "src/data_architecture/contracts.py",
         "src/data_architecture/synthetic_data.py",
         "src/data_architecture/staging.py",
+        "src/data_architecture/warehouse.py",
+        "warehouse/sql/00_staging_views.sql",
+        "warehouse/sql/10_dimensions.sql",
+        "warehouse/sql/20_facts.sql",
+        "warehouse/quality_checks.yml",
         "tests",
     ]
     missing = [path for path in expected if not (ROOT / path).exists()]

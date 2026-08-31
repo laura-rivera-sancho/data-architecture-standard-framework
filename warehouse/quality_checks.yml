@@ -1,0 +1,119 @@
+checks:
+  - name: customer_business_version_grain
+    description: Customer business key and effective timestamp identify one dimension row.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*) FROM (
+          SELECT customer_id, valid_from
+          FROM warehouse.dim_customer
+          GROUP BY customer_id, valid_from
+          HAVING COUNT(*) > 1
+      )
+  - name: one_current_customer_version
+    description: Every non-unknown customer has exactly one current dimension row.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*) FROM (
+          SELECT customer_id
+          FROM warehouse.dim_customer
+          WHERE customer_key <> 0
+          GROUP BY customer_id
+          HAVING SUM(CAST(is_current AS INTEGER)) <> 1
+      )
+  - name: order_fact_grain
+    description: Order fact contains at most one row per operational order.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*) FROM (
+          SELECT order_id
+          FROM warehouse.fact_orders
+          GROUP BY order_id
+          HAVING COUNT(*) > 1
+      )
+  - name: order_item_fact_grain
+    description: Order item fact contains at most one row per order and line number.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*) FROM (
+          SELECT order_id, line_number
+          FROM warehouse.fact_order_items
+          GROUP BY order_id, line_number
+          HAVING COUNT(*) > 1
+      )
+  - name: order_customer_relationship
+    description: Every order fact resolves to a customer dimension member.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*)
+      FROM warehouse.fact_orders AS facts
+      LEFT JOIN warehouse.dim_customer AS dimensions USING (customer_key)
+      WHERE dimensions.customer_key IS NULL
+  - name: order_date_relationship
+    description: Every order fact resolves to a calendar dimension member.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*)
+      FROM warehouse.fact_orders AS facts
+      LEFT JOIN warehouse.dim_date AS dimensions ON facts.order_date_key = dimensions.date_key
+      WHERE dimensions.date_key IS NULL
+  - name: order_item_product_relationship
+    description: Every order item resolves to a product dimension member.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*)
+      FROM warehouse.fact_order_items AS facts
+      LEFT JOIN warehouse.dim_product AS dimensions USING (product_key)
+      WHERE dimensions.product_key IS NULL
+  - name: touchpoint_dimension_relationships
+    description: Every campaign touchpoint resolves to customer, campaign, channel, and date dimensions.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*)
+      FROM warehouse.fact_campaign_touchpoints AS facts
+      LEFT JOIN warehouse.dim_customer AS customers USING (customer_key)
+      LEFT JOIN warehouse.dim_campaign AS campaigns USING (campaign_key)
+      LEFT JOIN warehouse.dim_channel AS channels USING (channel_key)
+      LEFT JOIN warehouse.dim_date AS dates ON facts.touchpoint_date_key = dates.date_key
+      WHERE customers.customer_key IS NULL
+         OR campaigns.campaign_key IS NULL
+         OR channels.channel_key IS NULL
+         OR dates.date_key IS NULL
+  - name: order_header_line_reconciliation
+    description: Summed line gross equals the order-header gross amount.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*) FROM (
+          SELECT orders.order_id
+          FROM warehouse.fact_orders AS orders
+          JOIN warehouse.fact_order_items AS items USING (order_key)
+          GROUP BY orders.order_id, orders.gross_amount
+          HAVING ABS(orders.gross_amount - SUM(items.line_gross_amount)) > 0.01
+      )
+  - name: recognized_revenue_rule
+    description: Cancelled and refunded orders have zero recognized revenue.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*)
+      FROM warehouse.fact_orders
+      WHERE order_status IN ('cancelled', 'refunded')
+        AND recognized_revenue <> 0
+  - name: positive_item_quantity
+    description: Every order item records a positive quantity.
+    expected_value: 0
+    sql: |
+      SELECT COUNT(*) FROM warehouse.fact_order_items WHERE quantity <= 0
+  - name: fact_source_row_count_reconciliation
+    description: Every contracted source row is represented in its corresponding fact table.
+    expected_value: 0
+    sql: |
+      SELECT
+          ABS((SELECT COUNT(*) FROM staging.orders)
+              - (SELECT COUNT(*) FROM warehouse.fact_orders))
+        + ABS((SELECT COUNT(*) FROM staging.order_items)
+              - (SELECT COUNT(*) FROM warehouse.fact_order_items))
+        + ABS((SELECT COUNT(*) FROM staging.campaign_touchpoints)
+              - (SELECT COUNT(*) FROM warehouse.fact_campaign_touchpoints))
+        + ABS((SELECT COUNT(*) FROM staging.experiment_exposures)
+              - (SELECT COUNT(*) FROM warehouse.fact_experiment_exposures))
+        + ABS((SELECT COUNT(*) FROM staging.customer_events)
+              - (SELECT COUNT(*) FROM warehouse.fact_customer_events))

@@ -141,10 +141,15 @@ def generate_operational_data(
     channels = ["email", "paid_social", "sms", "push"]
     for index in range(1, config.touchpoints + 1):
         channel = rng.choice(channels)
+        customer_id = rng.choice(customer_ids)
+        earliest_touchpoint = max(customer_created[customer_id], ANCHOR - timedelta(days=180))
+        available_hours = max(
+            1, int((ANCHOR - timedelta(hours=12) - earliest_touchpoint).total_seconds() // 3600)
+        )
         touchpoints.append(
             {
                 "touchpoint_id": f"T{index:07d}",
-                "customer_id": rng.choice(customer_ids),
+                "customer_id": customer_id,
                 "campaign_id": f"CMP{rng.randint(1, 12):03d}",
                 "channel": channel,
                 "touchpoint_type": rng.choices(
@@ -153,7 +158,7 @@ def generate_operational_data(
                     k=1,
                 )[0],
                 "touchpoint_timestamp": _timestamp(
-                    ANCHOR - timedelta(hours=rng.randint(12, 24 * 180))
+                    earliest_touchpoint + timedelta(hours=rng.randint(1, available_hours))
                 ),
                 "attributed_cost": _money(
                     {"email": 0.03, "paid_social": 0.85, "sms": 0.08, "push": 0.01}[channel]
@@ -167,7 +172,11 @@ def generate_operational_data(
         experiment_id = f"EXP{experiment_number:03d}"
         sample_size = min(config.customers, max(10, config.customers // 2))
         for customer_id in rng.sample(customer_ids, sample_size):
-            assigned_at = ANCHOR - timedelta(days=rng.randint(15, 120), hours=rng.randint(0, 23))
+            earliest_assignment = max(customer_created[customer_id], ANCHOR - timedelta(days=120))
+            available_hours = max(
+                1, int((ANCHOR - timedelta(days=15) - earliest_assignment).total_seconds() // 3600)
+            )
+            assigned_at = earliest_assignment + timedelta(hours=rng.randint(1, available_hours))
             was_exposed = rng.random() < 0.94
             experiment_exposures.append(
                 {
@@ -187,17 +196,22 @@ def generate_operational_data(
 
     customer_events: list[dict[str, Any]] = []
     for index in range(1, config.events + 1):
+        customer_id = rng.choice(customer_ids)
+        earliest_event = max(customer_created[customer_id], ANCHOR - timedelta(days=120))
+        available_minutes = max(
+            1, int((ANCHOR - timedelta(hours=1) - earliest_event).total_seconds() // 60)
+        )
         customer_events.append(
             {
                 "event_id": f"E{index:08d}",
-                "customer_id": rng.choice(customer_ids),
+                "customer_id": customer_id,
                 "session_id": f"S{rng.randint(1, max(1, config.events // 3)):07d}",
                 "event_name": rng.choice(
                     ["page_view", "product_view", "add_to_cart", "checkout_start", "login"]
                 ),
                 "channel": rng.choice(["web", "ios", "android"]),
                 "event_timestamp": _timestamp(
-                    ANCHOR - timedelta(minutes=rng.randint(60, 60 * 24 * 120))
+                    earliest_event + timedelta(minutes=rng.randint(1, available_minutes))
                 ),
                 "source_loaded_at": loaded_at,
             }
