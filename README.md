@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/repository-banner.png" alt="Data Architecture Standard Framework banner" width="100%">
+</p>
+
 # Data Architecture Standard Framework
 
 [![Repository quality](https://github.com/laura-rivera-sancho/data-architecture-standard-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/laura-rivera-sancho/data-architecture-standard-framework/actions/workflows/ci.yml)
