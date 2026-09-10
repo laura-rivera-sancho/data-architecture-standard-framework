@@ -1,6 +1,4 @@
-# Data Architecture Fundamentals
-
-This guide summarizes the concepts, tradeoffs, and interview language behind the Data Architecture Standard Framework. It is designed as a review aid: understand the decision each pattern supports rather than memorizing definitions in isolation.
+# Data Architecture Fundamentals.
 
 ## What data architecture does
 
