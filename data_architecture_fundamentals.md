@@ -83,7 +83,7 @@ Examples:
 
 Mixing grains creates fanout, duplicated measures, ambiguous keys, and incorrect totals. When two one-to-many sources must feed a customer-level product, aggregate each source to customer grain before joining.
 
-#Design sequence:
+Design sequence:
 
 1. define the business process and decision
 2. declare the grain
