@@ -342,7 +342,7 @@ Machine Learning features require point-in-time correctness: every feature must 
 
 Experiment products must preserve assignment, exposure, eligibility, variant, timestamp, and outcome windows. A mart can summarize observed results, but causal interpretation still requires randomization checks, sample-ratio validation, power, uncertainty, and guardrails.
 
-## Architecture tradeoffs interviewers often probe
+## Architecture tradeoffs
 
 ### Build versus buy
 
@@ -363,53 +363,6 @@ Raw access speeds exploration but increases privacy and consistency risk. Curate
 ### Latency versus complexity and cost
 
 Real-time delivery increases operational complexity. Start from the business decision's maximum tolerable delay, then choose the least complex architecture that meets it.
-
-## How to explain this portfolio project in an interview
-
-Use a concise problem–decision–design–control–tradeoff structure:
-
-1. **Problem:** fragmented customer, order, campaign, experiment, and event sources produced inconsistent metrics and duplicated feature logic.
-2. **Decision:** create a governed analytical foundation for lifecycle, campaign, experimentation, Machine Learning, and executive use cases.
-3. **Design:** versioned source contracts feed source-aligned staging, a dimensional warehouse, six decision-specific marts, and a semantic governance layer.
-4. **Controls:** automated tests protect grain, keys, freshness, relationships, financial reconciliation, metric definitions, lineage, and service expectations.
-5. **Tradeoff:** DuckDB and synthetic data make the design portable and inspectable; a production deployment would add durable cloud storage, orchestration, enforced access control, alert delivery, and incremental processing.
-
-### Milestone talking points
-
-- **DA1:** contracts turn producer assumptions into governed interfaces; staging standardizes data while preserving source traceability.
-- **DA2:** declared grains, conformed dimensions, surrogate keys, Type 2-ready customer history, unknown members, and reconciliation create a defensible warehouse core.
-- **DA3:** six marts serve specific audiences and prevent every team from rebuilding joins and metric logic independently.
-- **DA4:** metric definitions, lineage, ownership, service levels, runbooks, and change management make the platform operable rather than merely modeled.
-
-## Practice interview questions
-
-### Why use a star schema?
-
-It gives analytical consumers a clear fact-centered model, reduces join complexity, works well with columnar engines and business-intelligence tools, and makes grain and measure behavior easier to govern. I would normalize selectively only when hierarchy reuse or scale justified the extra joins.
-
-### When would you choose Type 1 versus Type 2?
-
-I use Type 1 for corrections or attributes whose historical value is not relevant. I use Type 2 when facts must retain the context that was valid at event time. The choice is per attribute and driven by the analytical question.
-
-### How do you prevent duplicate metrics after joins?
-
-I declare the target grain, validate relationship cardinality, aggregate each one-to-many source before joining to a higher grain, and reconcile component and final totals. I also store additive numerators and denominators rather than averaging rates.
-
-### How would you handle a breaking source-schema change?
-
-The contract check should block unsafe publication. I would identify impacted consumers through lineage, agree on a versioned interface and migration window, update transformations and tests, validate a parallel run, communicate the effective date, and retain a rollback path.
-
-### How do you decide between batch and streaming?
-
-I start with the decision's latency requirement. If hourly or daily data supports the action, batch is simpler and cheaper. I choose streaming only when continuous processing creates measurable value and the team can operate ordering, replay, schema, and monitoring concerns.
-
-### What makes a pipeline production-ready?
-
-Clear ownership, versioned inputs, idempotent processing, automated tests, observable service levels, secure access, bounded retries, backfill and rollback procedures, documented dependencies, cost controls, and a tested incident runbook.
-
-### What would you change for production scale?
-
-I would preserve the demonstrated contracts and model boundaries while selecting managed storage and compute based on workload, adding orchestration, incremental or change-data processing, enforced identity and access management, centralized secrets, alert delivery, environment promotion, durable run history, and cost/performance monitoring.
 
 ## Compact glossary
 
@@ -434,13 +387,13 @@ I would preserve the demonstrated contracts and model boundaries while selecting
 
 ## Final review checklist
 
-- Can I explain the business problem before the technology?
-- Can I state the grain of every important fact and mart?
-- Can I explain why surrogate keys and Type 2 history are useful?
-- Can I distinguish warehouse, lake, lakehouse, and mart patterns?
-- Can I describe how contracts, tests, reconciliation, and lineage work together?
-- Can I explain batch, incremental, and change-data choices?
-- Can I discuss security, privacy, service levels, recovery, performance, and cost?
-- Can I name the limits of the portfolio implementation and a credible production evolution?
+- Is the business problem clear before the technology choices?
+- Is the grain of every important fact and mart declared?
+- Is the need for surrogate keys and Type 2 history explained?
+- Are warehouse, lake, lakehouse, and mart roles distinguished?
+- Do contracts, tests, reconciliation, and lineage work together?
+- Are batch, incremental, and change-data choices justified?
+- Are security, privacy, service levels, recovery, performance, and cost covered?
+- Are implementation limits and a credible production path documented?
 
-Use the linked implementation documents in the repository README to connect each concept to concrete SQL, configuration, tests, evidence, and design decisions.
+For the repository-specific implementation, see the [architecture overview](docs/architecture_overview.md), [decision records](docs/decisions/ADR-001-portfolio-platform.md), and [stakeholder readout](docs/stakeholder_readout.md).

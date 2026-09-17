@@ -4,7 +4,7 @@ This repository delivers the Data Warehousing, Data Marts & Data Modeling pillar
 
 ## Completion standard
 
-A milestone is complete only when it includes documented business purpose and grain, reproducible implementation, automated tests, ownership and classification, source-to-target lineage, operational considerations, and a recruiter-friendly result preview.
+A milestone is complete only when it includes documented business purpose and grain, reproducible implementation, automated tests, ownership and classification, source-to-target lineage, operational considerations, and a clear result preview.
 
 ## DA1 — Source Contracts & Staging
 

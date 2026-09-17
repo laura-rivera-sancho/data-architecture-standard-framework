@@ -6,17 +6,17 @@
 
 [![Repository quality](https://github.com/laura-rivera-sancho/data-architecture-standard-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/laura-rivera-sancho/data-architecture-standard-framework/actions/workflows/ci.yml)
 
-**A portfolio-ready framework for turning fragmented operational data into governed, tested, and decision-ready analytical data products.**
+**A framework for turning fragmented operational data into governed, tested analytical data products.**
 
 This repository demonstrates how I design an omnichannel marketing data platform from source contracts through dimensional models, business data marts, semantic definitions, and operational monitoring. The work is intentionally tied to concrete Analytics and Machine Learning use cases: RFM segmentation, marketing experimentation, campaign performance, campaign-response propensity, and executive growth reporting.
 
-All companies, identifiers, and future sample datasets are fictional or synthetic. No employer, client, customer, or confidential data are used.
+The company, identifiers, and sample data are fictional or synthetic. No employer, client, customer, or confidential data are used.
 
 ## Recommended review path
 
 | What to assess | Start here | What it demonstrates |
 |---|---|---|
-| Interview preparation | [Data architecture fundamentals](data_architecture_fundamentals.md) | Core concepts, design tradeoffs, practice questions, and project talking points |
+| Core concepts | [Data architecture fundamentals](data_architecture_fundamentals.md) | Reusable concepts, design tradeoffs, limitations, and a quick reference |
 | Portfolio scope | [Roadmap](ROADMAP.md) | Four milestone sequence and completion gates |
 | Architecture judgment | [Architecture overview](docs/architecture_overview.md) | Layering, ownership, governance, and downstream consumers |
 | Data-contract design | [Customer source contract](contracts/sources/customers.yml) | Grain, keys, freshness, field semantics, and data classification |
@@ -46,7 +46,7 @@ The target platform will provide:
 - governed metric definitions with owners, lineage, and freshness expectations
 - automated quality controls from source contracts through published marts
 
-## Planned architecture
+## Architecture at a glance
 
 ```text
 Operational sources
@@ -103,9 +103,9 @@ data-architecture-standard-framework/
 ├── src/data_architecture/   # Reusable validation and modeling utilities
 ├── tests/                   # Contract and repository-integrity tests
 ├── warehouse/               # Ordered SQL models and declared quality checks
-├── data_architecture_fundamentals.md # Interview concepts, tradeoffs, and practice questions
+├── data_architecture_fundamentals.md # Reusable concepts, tradeoffs, and reference questions
 ├── ROADMAP.md               # Pillar milestones and acceptance criteria
-└── README.md                # Recruiter-facing repository landing page
+└── README.md                # Repository overview and navigation
 ```
 
 ## Quick start
