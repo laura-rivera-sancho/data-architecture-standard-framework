@@ -1,50 +1,76 @@
 <p align="center">
-  <img src="assets/repository-banner.png" alt="Data Architecture Standard Framework banner" width="100%">
+  <img src="assets/repository-banner.png" alt="Governed Analytics Data Products banner" width="100%">
 </p>
 
-# Data Architecture Standard Framework
+# Governed Analytics Data Products
 
 [![Repository quality](https://github.com/laura-rivera-sancho/data-architecture-standard-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/laura-rivera-sancho/data-architecture-standard-framework/actions/workflows/ci.yml)
 
-**A framework for turning fragmented operational data into governed, tested analytical data products.**
+**A working reference implementation for turning fragmented operational data into tested, governed, decision-ready data products.**
 
-This repository demonstrates how I design an omnichannel marketing data platform from source contracts through dimensional models, business data marts, semantic definitions, and operational monitoring. The work is intentionally tied to concrete Analytics and Machine Learning use cases: RFM segmentation, marketing experimentation, campaign performance, campaign-response propensity, and executive growth reporting.
+[Read the stakeholder summary](docs/stakeholder_readout.md) · [Review the architecture](docs/architecture_overview.md) · [Inspect the mart catalog](docs/mart_catalog.md) · [Contact Laura](mailto:laura.riverasancho33@gmail.com)
 
-The company, identifiers, and sample data are fictional or synthetic. No employer, client, customer, or confidential data are used.
+This project is for analytics, data, product, and operations leaders who need consistent customer and campaign identities, trusted metrics, reusable marts, and visible operating controls before scaling analytics or AI work.
 
-## Recommended review path
+## The decision this supports
 
-| What to assess | Start here | What it demonstrates |
+Can the organization rely on a defined set of analytical data products for customer value, campaign performance, experimentation, ML features, and executive reporting—and what controls are required before wider use?
+
+The work makes grain, ownership, freshness, sensitivity, lineage, quality rules, and limitations explicit so consumers can judge whether a data product is fit for a particular decision.
+
+## Data-product pilot at a glance
+
+| Item | Typical scope |
+|---|---|
+| **Best for** | Teams rebuilding the same customer, campaign, experiment, or KPI logic across reports and models |
+| **Duration** | 4–6 weeks for a bounded priority domain |
+| **Inputs** | Source schemas and extracts; current KPI definitions; priority decisions and consumers; known quality issues; privacy and retention requirements; data and business owners |
+| **Week 1** | Confirm the priority decisions, source boundaries, grains, owners, classifications, and acceptance criteria |
+| **Weeks 2–3** | Implement source contracts, staging rules, identity logic, and reconciled dimensional models |
+| **Weeks 4–5** | Build the priority marts and governed metric definitions; validate quality, lineage, freshness, and consumer fit |
+| **Week 6** | Deliver the runbook, stakeholder readout, production gap assessment, and go / iterate / stop recommendation |
+| **Buyer receives** | Source contracts, tested data model, priority mart, metric catalog, lineage, quality controls, operating runbook, and executive recommendation |
+| **Not included** | Full enterprise-platform migration, unrestricted production access, every historical use case, vendor procurement, or ongoing operations after handoff |
+
+## Acceptance criteria
+
+Exact thresholds depend on the selected domain and source systems. At minimum:
+
+- source-to-output counts and critical measures reconcile;
+- table grain, keys, history behavior, and late-arriving-data rules are documented;
+- critical identifiers, relationships, freshness expectations, and business invariants are tested;
+- metrics have one declared definition, owner, aggregation behavior, lineage, and limitation;
+- sensitive fields and allowed uses are visible to consumers;
+- failure, recovery, and change-management responsibilities are documented; and
+- the final readout identifies what is ready, what remains risky, and the recommended next investment.
+
+## What the buyer can inspect
+
+| Evidence | Start here | What it shows |
 |---|---|---|
-| Core concepts | [Data architecture fundamentals](data_architecture_fundamentals.md) | Reusable concepts, design tradeoffs, limitations, and a quick reference |
-| Portfolio scope | [Roadmap](ROADMAP.md) | Four milestone sequence and completion gates |
-| Architecture judgment | [Architecture overview](docs/architecture_overview.md) | Layering, ownership, governance, and downstream consumers |
-| Data-contract design | [Customer source contract](contracts/sources/customers.yml) | Grain, keys, freshness, field semantics, and data classification |
-| Reusable implementation | [Contract validator](src/data_architecture/contracts.py) | Automated validation of contract structure and governance rules |
-| Staging design | [Source-to-staging mapping](docs/source_to_staging_mapping.md) | Type normalization, deduplication, traceability, and layer boundaries |
-| DA1 result | [DA1 evidence](docs/da1_evidence.md) | Reference-run metrics, reliability controls, failure evidence, and limitations |
-| Dimensional design | [Dimensional model](docs/dimensional_model.md) | Declared fact grain, conformed dimensions, customer history, and late-arriving data |
-| DA2 result | [DA2 evidence](docs/da2_evidence.md) | Warehouse table counts, quality results, reconciliation, and limitations |
-| Business data products | [Mart catalog](docs/mart_catalog.md) | Audience, decision, grain, ownership, measures, dependencies, and limitations |
-| DA3 result | [DA3 evidence](docs/da3_evidence.md) | Reference outputs, reconciliation controls, ML leakage boundary, and review cautions |
-| Governed meaning | [Semantic metric catalog](docs/semantic_metric_catalog.md) | Executable metric definitions, owners, aggregation behavior, and caveats |
-| Operability | [Operations runbook](docs/operations_runbook.md) | Service signals, incident severity, recovery, and communication expectations |
-| Final architecture | [Stakeholder readout](docs/stakeholder_readout.md) | Business value, design choices, risks, and production evolution |
-| DA4 result | [DA4 evidence](docs/da4_evidence.md) | Governance validation, lineage, service levels, and performance evidence |
-| Engineering quality | [Automated tests](tests) | Contract, repository-integrity, and critical-rule checks |
-| Design decisions | [ADR-001](docs/decisions/ADR-001-portfolio-platform.md) | Explicit tradeoffs and implementation boundaries |
+| Executive decision artifact | [Stakeholder readout](docs/stakeholder_readout.md) | Business value, design choices, risks, and production evolution |
+| Architecture | [Architecture overview](docs/architecture_overview.md) | Layer responsibilities, ownership, governance, and downstream consumers |
+| Source interface | [Customer source contract](contracts/sources/customers.yml) | Grain, keys, freshness, field semantics, and data classification |
+| Transformation control | [Source-to-staging mapping](docs/source_to_staging_mapping.md) | Type normalization, deduplication, traceability, and boundaries |
+| Consumer products | [Mart catalog](docs/mart_catalog.md) | Audience, decision, grain, measures, dependencies, and limitations |
+| Governed meaning | [Semantic metric catalog](docs/semantic_metric_catalog.md) | Executable definitions, owners, aggregation behavior, and caveats |
+| Operability | [Operations runbook](docs/operations_runbook.md) | Service signals, incident severity, recovery, and communication |
+| Engineering evidence | [Automated tests](tests) and [validator](src/data_architecture/contracts.py) | Contract, integrity, governance, and critical-rule checks |
+| Design rationale | [ADR-001](docs/decisions/ADR-001-portfolio-platform.md) | Explicit architectural tradeoffs and implementation boundaries |
+| Technical reference | [Method notes](data_architecture_fundamentals.md) and [roadmap](ROADMAP.md) | Concepts, limitations, implemented stages, and future work |
 
-## Portfolio business case
+## Demonstration boundary
 
-A fictional omnichannel retailer has customer, transaction, campaign, experiment, and behavioral-event data distributed across operational systems. Teams currently calculate customer value and marketing performance differently, model features are rebuilt for each project, and freshness or ownership failures are discovered manually.
+The organization, identifiers, data, and reported evidence in this repository are fictional or synthetic. The project demonstrates architecture judgment, contract-driven implementation, reconciliation, governance, and operability; it is not evidence that a real organization has adopted the design or achieved business outcomes from it.
 
-The target platform will provide:
+## How an engagement would start
 
-- consistent customer and campaign identities
-- auditable facts and conformed dimensions
-- trusted marts for RFM, campaigns, experiments, ML features, and executive reporting
-- governed metric definitions with owners, lineage, and freshness expectations
-- automated quality controls from source contracts through published marts
+1. Select one bounded decision domain and the consumers who depend on it.
+2. Review source schemas, metric definitions, known incidents, and a safe data sample.
+3. Confirm the written scope, ownership, access boundary, deliverables, acceptance criteria, and exclusions.
+4. Begin once source access, privacy expectations, and review responsibilities are agreed.
+
+For an initial scope discussion, [email Laura](mailto:laura.riverasancho33@gmail.com) with the decisions the data must support, the priority sources, the current failure points, and the target timeline.
 
 ## Architecture at a glance
 
@@ -71,9 +97,9 @@ Dimensional warehouse
 
 See the [architecture overview](docs/architecture_overview.md) for layer responsibilities and quality controls.
 
-## Milestones
+## Implemented capabilities
 
-| Milestone | Status | Outcome |
+| Capability | Evidence status | Outcome |
 |---|---|---|
 | **DA1 — Source Contracts & Staging** | Complete | Governed inputs, freshness expectations, identifiers, staging conventions, and automated checks |
 | **DA2 — Dimensional Warehouse** | Complete | Defensible facts, conformed dimensions, declared grain, history strategy, and business rules |
@@ -135,7 +161,7 @@ pytest
 - Define metrics once and reuse them consistently.
 - Prefer simple, inspectable architecture until scale or service requirements justify complexity.
 
-## Portfolio relationship
+## Related work
 
 This is the Data Warehousing, Data Marts & Data Modeling pillar of the broader [Data & AI Portfolio Roadmap](https://github.com/users/laura-rivera-sancho/projects/2). Its governed marketing data products are designed to support the RFM, experimentation, and campaign-response case studies planned across the Analytics and Machine Learning repositories.
 
