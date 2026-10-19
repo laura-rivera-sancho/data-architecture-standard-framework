@@ -12,6 +12,10 @@
 
 This project is for analytics, data, product, and operations leaders who need consistent customer and campaign identities, trusted metrics, reusable marts, and visible operating controls before scaling analytics or AI work.
 
+[![Governed data-product preview showing source contracts, tested transformations, reusable marts, governed metrics, and decision consumers](assets/executive-preview.svg)](docs/stakeholder_readout.md)
+
+*Reference implementation preview—[read the stakeholder summary](docs/stakeholder_readout.md) or [inspect the architecture and controls](docs/architecture_overview.md).*
+
 ## The decision this supports
 
 Can the organization rely on a defined set of analytical data products for customer value, campaign performance, experimentation, ML features, and executive reporting—and what controls are required before wider use?
@@ -57,7 +61,7 @@ Exact thresholds depend on the selected domain and source systems. At minimum:
 | Operability | [Operations runbook](docs/operations_runbook.md) | Service signals, incident severity, recovery, and communication |
 | Engineering evidence | [Automated tests](tests) and [validator](src/data_architecture/contracts.py) | Contract, integrity, governance, and critical-rule checks |
 | Design rationale | [ADR-001](docs/decisions/ADR-001-portfolio-platform.md) | Explicit architectural tradeoffs and implementation boundaries |
-| Technical reference | [Method notes](data_architecture_fundamentals.md) and [roadmap](ROADMAP.md) | Concepts, limitations, implemented stages, and future work |
+| Technical reference | [Method notes](method_notes.md) and [evidence map](ROADMAP.md) | Concepts, limitations, implemented capabilities, and future work |
 
 ## Demonstration boundary
 
@@ -101,10 +105,10 @@ See the [architecture overview](docs/architecture_overview.md) for layer respons
 
 | Capability | Evidence status | Outcome |
 |---|---|---|
-| **DA1 — Source Contracts & Staging** | Complete | Governed inputs, freshness expectations, identifiers, staging conventions, and automated checks |
-| **DA2 — Dimensional Warehouse** | Complete | Defensible facts, conformed dimensions, declared grain, history strategy, and business rules |
-| **DA3 — Business Data Marts** | Complete | Reusable data products for customer, marketing, experimentation, ML, and executive decisions |
-| **DA4 — Semantic Governance & Operations** | Complete | Trusted metrics, lineage, ownership, observability, performance, and change management |
+| **DA1 — Source Contracts & Staging** | Evidence available | Governed inputs, freshness expectations, identifiers, staging conventions, and automated checks |
+| **DA2 — Dimensional Warehouse** | Evidence available | Defensible facts, conformed dimensions, declared grain, history strategy, and business rules |
+| **DA3 — Business Data Marts** | Evidence available | Reusable data products for customer, marketing, experimentation, ML, and executive decisions |
+| **DA4 — Semantic Governance & Operations** | Evidence available | Trusted metrics, lineage, ownership, observability, performance, and change management |
 
 ## Repository map
 
@@ -129,8 +133,8 @@ data-architecture-standard-framework/
 ├── src/data_architecture/   # Reusable validation and modeling utilities
 ├── tests/                   # Contract and repository-integrity tests
 ├── warehouse/               # Ordered SQL models and declared quality checks
-├── data_architecture_fundamentals.md # Reusable concepts, tradeoffs, and reference questions
-├── ROADMAP.md               # Pillar milestones and acceptance criteria
+├── method_notes.md          # Reusable concepts, tradeoffs, and reference questions
+├── ROADMAP.md               # Capability evidence and readiness criteria
 └── README.md                # Repository overview and navigation
 ```
 
@@ -163,7 +167,7 @@ pytest
 
 ## Related work
 
-This is the Data Warehousing, Data Marts & Data Modeling pillar of the broader [Data & AI Portfolio Roadmap](https://github.com/users/laura-rivera-sancho/projects/2). Its governed marketing data products are designed to support the RFM, experimentation, and campaign-response case studies planned across the Analytics and Machine Learning repositories.
+This is the Data Warehousing, Data Marts & Data Modeling pillar of the broader [public portfolio](https://github.com/laura-rivera-sancho). Its governed marketing data products are designed to support the RFM, experimentation, and campaign-response case studies across the Analytics and Machine Learning repositories.
 
 ## License and citation
 

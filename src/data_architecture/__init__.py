@@ -1,3 +1,3 @@
-"""Reusable utilities for the Data Architecture Standard Framework."""
+"""Reusable utilities for governed analytics data products."""
 
 __version__ = "0.1.0"

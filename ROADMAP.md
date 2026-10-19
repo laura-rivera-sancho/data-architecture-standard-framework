@@ -1,14 +1,14 @@
-# Data Architecture Pillar Roadmap
+# Data Product Evidence & Readiness Map
 
 This repository delivers the Data Warehousing, Data Marts & Data Modeling pillar of the broader Data & AI portfolio. The business case is an omnichannel marketing platform that provides trusted data for customer analytics, experimentation, campaign optimization, Machine Learning, and executive reporting.
 
-## Completion standard
+## Evidence standard
 
-A milestone is complete only when it includes documented business purpose and grain, reproducible implementation, automated tests, ownership and classification, source-to-target lineage, operational considerations, and a clear result preview.
+A capability is presented as decision-ready evidence only when it includes documented business purpose and grain, reproducible implementation, automated tests, ownership and classification, source-to-target lineage, operational considerations, and a clear result preview.
 
 ## DA1 — Source Contracts & Staging
 
-**Status:** Complete
+**Evidence status:** Available
 
 **Outcome:** Operational inputs become explicit, version-controlled interfaces before downstream modeling begins.
 
@@ -32,7 +32,7 @@ Acceptance criteria:
 
 ## DA2 — Dimensional Warehouse
 
-**Status:** Complete
+**Evidence status:** Available
 
 **Outcome:** Reusable facts and conformed dimensions provide stable analytical grain and business meaning.
 
@@ -52,7 +52,7 @@ Planned conformed dimensions:
 - `dim_channel`
 - `dim_date`
 
-Completed evidence:
+Available evidence:
 
 - [x] declared fact grain and deterministic integer surrogate keys
 - [x] conformed customer, product, campaign, channel, and date dimensions
@@ -65,7 +65,7 @@ Completed evidence:
 
 ## DA3 — Business Data Marts
 
-**Status:** Complete
+**Evidence status:** Available
 
 **Outcome:** Role-oriented analytical products answer defined business questions without repeated metric reconstruction.
 
@@ -80,7 +80,7 @@ Published marts:
 
 Each mart must declare its audience, decision, grain, dimensions, measures, update cadence, owner, upstream dependencies, and limitations.
 
-Completed evidence:
+Available evidence:
 
 - [x] fanout-safe `customer_360` with reconciled customer coverage
 - [x] deterministic RFM measures, quintile scores, and action-oriented segments
@@ -93,11 +93,11 @@ Completed evidence:
 
 ## DA4 — Semantic Governance & Operations
 
-**Status:** Complete
+**Evidence status:** Available
 
 **Outcome:** Consumers can discover, trust, operate, and safely change published analytical data products.
 
-Completed evidence:
+Available evidence:
 
 - [x] eight executable metric definitions with grain, source, aggregation behavior, owner, and caveat
 - [x] machine-readable lineage for all six published data products
@@ -117,6 +117,6 @@ Completed evidence:
 5. Publish customer and marketing marts.
 6. Add ML and executive products.
 7. Establish semantic metrics, observability, and change controls.
-8. Complete the technical, analytical, communication, and portfolio review gates.
+8. Pass the technical, analytical, communication, and buyer-evidence review.
 
 Dates remain intentionally unassigned until delivery cadence is agreed.

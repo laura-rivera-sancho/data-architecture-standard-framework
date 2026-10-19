@@ -1,4 +1,4 @@
-# Data Architecture Fundamentals.
+# Data Architecture Method Notes
 
 ## What data architecture does
 
